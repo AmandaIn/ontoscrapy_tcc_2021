@@ -2,7 +2,6 @@ import scrapy
 import re
 
 
-
 class WikiScraping(scrapy.Spider):
     name = "inf_program"
 
@@ -14,14 +13,37 @@ class WikiScraping(scrapy.Spider):
         tr = response.xpath('//table[@class="infobox vevent"]//tr')
         y = "vida"
 
-        vida = "developer"
+        attribute = ['release', 'developer']
         for n in range(len(tr)):
 
             line = tr[n].extract()
             ', '.join(line)
-            resultado = re.search(vida, line)
 
-            if resultado.group(0) == "developer":
-                yield dict(developer=re.sub('<[^>]+?>', '', tr[n].extract()))
-                print(resultado.group(0))
+            for m in range(len(attribute)):
+                result_line = re.search(attribute[m], line)
+
+                if result_line:
+                    yield dict(developer=re.sub('<[^>]+?>', '', tr[n].extract()))
+
+                if result_line:
+                    yield dict(stable_release=re.sub('<[^>]+?>', '', tr[n].extract()))
+
+
+
+
+
+
+            #print(result_line.group(0))
+
+            #print(result_line)
+            #result_line2 = re.search("system", line)
+
+            # if result_line.group(0) == "developer":
+              # yield dict(developer=re.sub('<[^>]+?>', '', tr[n].extract()))
+              # print(result_line.group(0))
+
+            #f result_line2.group(0) == "system":
+               # yield dict(sistema=re.sub('<[^>]+?>', '', tr[n].extract()))
+                #print(result_line2.group(0))
+
 
