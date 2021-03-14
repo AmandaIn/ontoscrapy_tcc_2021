@@ -22,11 +22,12 @@ class WikiScraping(scrapy.Spider):
             for m in range(len(attribute)):
                 result_line = re.search(attribute[m], line)
 
-                if result_line:
+                if result_line and (attribute[m] == "developer"):
                     yield dict(developer=re.sub('<[^>]+?>', '', tr[n].extract()))
 
-                if result_line:
+                if result_line and (attribute[m] == "release"):
                     yield dict(stable_release=re.sub('<[^>]+?>', '', tr[n].extract()))
+
 
 
 
