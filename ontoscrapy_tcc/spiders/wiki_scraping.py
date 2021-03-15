@@ -12,19 +12,19 @@ class WikiScraping(scrapy.Spider):
                   ]
 
     def parse(self, response):
-
+        #--------salvar o nome e a descrição do programa-------
         yield dict(name_program=response.xpath('//title//text()').extract_first())
         yield dict(description=re.sub('<[^>]+?>', '', response.xpath('//p').extract_first()))
-
+        #-------salvar as linhas da tabela para percorrê-las------
         tr = response.xpath('//table[@class="infobox vevent"]//tr')
-
+        #-------lista com os possíveis atributos de uma tabela-------
         attribute = ['author', 'developer', 'release', 'repository',  'system', 'platform', 'available', 'categories', 'license', 'website', 'written']
-
+        #-------laço para percorrer as linahs da tabela------------
         for n in range(len(tr)):
-
+            #-------conversão dos elementos em string para fazer a comparação através do re--------
             line = tr[n].extract()
             ', '.join(line)
-
+            #------laço para verificar se a linha possui o atributo e salvá-la no dicionario correspondente-------
             for m in range(len(attribute)):
                 result_line = re.search(attribute[m], line, re.IGNORECASE)
 
