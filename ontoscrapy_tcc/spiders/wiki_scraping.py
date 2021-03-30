@@ -5,12 +5,7 @@ import re
 class WikiScraping(scrapy.Spider):
     name = "inf_program"
 
-    start_urls = ["https://en.wikipedia.org/wiki/Clustal#ClustalW",
-                  "https://en.wikipedia.org/wiki/MAFFT",
-                  "https://en.wikipedia.org/wiki/MUSCLE_(alignment_software)",
-                  "https://en.wikipedia.org/wiki/JAligner"
-                  ]
-
+    start_urls = ['https://en.wikipedia.org/wiki/Clustal#ClustalW', 'https://en.wikipedia.org/wiki/MAFFT', 'https://en.wikipedia.org/wiki/MUSCLE_(alignment_software)', 'https://en.wikipedia.org/wiki/JAligner']
     def parse(self, response):
         #--------salvar o nome e a descrição do programa-------
         yield dict(name_program=response.xpath('//title//text()').extract_first())
