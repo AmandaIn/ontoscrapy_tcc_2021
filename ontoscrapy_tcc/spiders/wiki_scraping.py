@@ -5,6 +5,7 @@ import re
 class WikiScraping(scrapy.Spider):
     name = "inf_program"
 
+
     start_urls = ["https://en.wikipedia.org/wiki/Clustal#ClustalW",
                   "https://en.wikipedia.org/wiki/MAFFT",
                   "https://en.wikipedia.org/wiki/MUSCLE_(alignment_software)",
