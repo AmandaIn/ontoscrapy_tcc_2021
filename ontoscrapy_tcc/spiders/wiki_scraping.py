@@ -5,21 +5,24 @@ import re
 class WikiScraping(scrapy.Spider):
     name = "inf_program"
 
-    start_urls = ['https://en.wikipedia.org/wiki/Clustal#ClustalW', 'https://en.wikipedia.org/wiki/MAFFT', 'https://en.wikipedia.org/wiki/MUSCLE_(alignment_software)', 'https://en.wikipedia.org/wiki/JAligner']
+    start_urls = ['https://en.wikipedia.org/wiki/MAFFT']
+
     def parse(self, response):
-        #--------salvar o nome e a descrição do programa-------
+        # --------salvar o nome e a descrição do programa-------
+
         yield dict(name_program=response.xpath('//title//text()').extract_first())
         yield dict(description=re.sub('<[^>]+?>', '', response.xpath('//p').extract_first()))
-        #-------salvar as linhas da tabela para percorrê-las------
+        # -------salvar as linhas da tabela para percorrê-las------
         tr = response.xpath('//table[@class="infobox vevent"]//tr')
-        #-------lista com os possíveis atributos de uma tabela-------
-        attribute = ['author', 'developer', 'release', 'repository',  'system', 'platform', 'available', 'categories', 'license', 'website', 'written']
-        #-------laço para percorrer as linahs da tabela------------
+        # -------lista com os possíveis atributos de uma tabela-------
+        attribute = ['author', 'developer', 'release', 'repository', 'system', 'platform', 'available', 'categories',
+                     'license', 'website', 'written']
+        # -------laço para percorrer as linhas da tabela------------
         for n in range(len(tr)):
-            #-------conversão dos elementos em string para fazer a comparação através do re--------
+            # -------conversão dos elementos em string para fazer a comparação através do re--------
             line = tr[n].extract()
             ', '.join(line)
-            #------laço para verificar se a linha possui o atributo e salvá-la no dicionario correspondente-------
+            # ------laço para verificar se a linha possui o atributo e salvá-la no dicionario correspondente-------
             for m in range(len(attribute)):
                 result_line = re.search(attribute[m], line, re.IGNORECASE)
 
@@ -55,10 +58,3 @@ class WikiScraping(scrapy.Spider):
 
                 if result_line and (attribute[m] == "written"):
                     yield dict(written_in=re.sub('<[^>]+?>', '', tr[n].extract()))
-
-
-
-
-
-
-
