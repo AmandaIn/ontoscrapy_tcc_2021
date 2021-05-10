@@ -26,37 +26,37 @@ def search_metadata(list_programs):
                 f.write(i)
 
 
-name_program = "mafft"
-url_base = "https://en.wikipedia.org"
+def generate_url(name_program):
+    url_base = "https://en.wikipedia.org"
 
-# Criando um mechanize browser e indo para url
-browser = mechanize.Browser()
-browser.set_handle_robots(False)
-browser.set_handle_equiv(False)
-browser.open("https://en.wikipedia.org/wiki/Main_Page")
+    # Criando um mechanize browser e indo para url
+    browser = mechanize.Browser()
+    browser.set_handle_robots(False)
+    browser.set_handle_equiv(False)
+    browser.open("https://en.wikipedia.org/wiki/Main_Page")
 
-# Selecionando o formulário da Wiki para busca da pagina do programa
-browser.select_form(nr=0)
+    # Selecionando o formulário da Wiki para busca da pagina do programa
+    browser.select_form(nr=0)
 
-# Definindo a entrada do formulário de busca
-browser["search"] = name_program
+    # Definindo a entrada do formulário de busca
+    browser["search"] = name_program
 
-# Submetendo a busca
-response = browser.submit()
+    # Submetendo a busca
+    response = browser.submit()
 
-# Recuperando a url da busca
-url_origen = response.geturl()
+    # Recuperando a url da busca
+    url_origen = response.geturl()
 
-# Procurando na página de busca o link correto da página do programa
-html = urlopen(url_origen)
-soup = BeautifulSoup(html, 'html.parser')
-getValueFromDiv = soup.find('div', class_='mw-search-result-heading')
+    # Procurando na página de busca o link correto da página do programa
+    html = urlopen(url_origen)
+    soup = BeautifulSoup(html, 'html.parser')
+    getValueFromDiv = soup.find('div', class_='mw-search-result-heading')
 
-# Unindo a url base com o link correto encontrado
-link = url_base + getValueFromDiv.a['href']
+    # Unindo a url base com o link correto encontrado
+    link = url_base + getValueFromDiv.a['href']
+    return link
 
-#print(link)
 
-search_metadata([link])
+search_metadata([generate_url("clustal")])
 
 os.system("scrapy crawl inf_program")

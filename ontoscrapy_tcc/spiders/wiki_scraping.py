@@ -5,7 +5,7 @@ import re
 class WikiScraping(scrapy.Spider):
     name = "inf_program"
 
-    start_urls = ['https://en.wikipedia.org/wiki/MAFFT']
+    start_urls = ['https://en.wikipedia.org/wiki/Clustal']
 
     def parse(self, response):
         # --------salvar o nome e a descrição do programa-------
@@ -13,7 +13,7 @@ class WikiScraping(scrapy.Spider):
         yield dict(name_program=response.xpath('//title//text()').extract_first())
         yield dict(description=re.sub('<[^>]+?>', '', response.xpath('//p').extract_first()))
         # -------salvar as linhas da tabela para percorrê-las------
-        tr = response.xpath('//table[@class="infobox vevent"]//tr')
+        tr = response.xpath('//table[@class="infobox vevent"]//tr') 
         # -------lista com os possíveis atributos de uma tabela-------
         attribute = ['author', 'developer', 'release', 'repository', 'system', 'platform', 'available', 'categories',
                      'license', 'website', 'written']
